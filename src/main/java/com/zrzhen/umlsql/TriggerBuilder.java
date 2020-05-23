@@ -10,7 +10,7 @@ public class TriggerBuilder {
 
     public static void main(String[] args) throws IOException {
         String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdzTrigger.sql";
+        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz_trigger.sql";
 
 
         List<TableModel> tableList = bufferedReader(filePath);
@@ -78,10 +78,10 @@ public class TriggerBuilder {
                             table.setColumnNames(columnNames);
 
 
-                            String triggerInsert = "CREATE trigger " + name + "_insert  after insert on " + name
-                                    + " for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
-                            String triggerUpdate = "CREATE trigger " + name + "_update  after update on " + name
-                                    + " for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
+                            String triggerInsert = "CREATE trigger " + name + "_insert  after insert on `" + name
+                                    + "` for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
+                            String triggerUpdate = "CREATE trigger " + name + "_update  after update on `" + name
+                                    + "` for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
 
                             String values = "values (";
 

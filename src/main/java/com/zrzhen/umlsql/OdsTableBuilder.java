@@ -7,7 +7,7 @@ import java.util.List;
 public class OdsTableBuilder {
     public static void main(String[] args) throws IOException {
         String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdzlOdsTable.sql";
+        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\ods_cdz.sql";
 
         List<Table> tableList = bufferedReader(filePath);
         String sqlStr = "";
