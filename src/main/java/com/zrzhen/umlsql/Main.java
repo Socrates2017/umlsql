@@ -7,8 +7,8 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.puml";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.sql";
+        String filePath = "E:\\github\\zetty\\cms\\doc\\cdz.puml";
+        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
         List<Table> tableList = bufferedReader(filePath);
         String sqlStr = "";
         for (Table table : tableList) {
@@ -80,6 +80,10 @@ public class Main {
                             String buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE \n)  ENGINE=" + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';";
                             table.setBuildSql(buildSql);
                             matchLine = false;
+                            end=false;
+                            name="";
+                            comment = "";
+                            columns = "";
                         }
                     }
                 }
