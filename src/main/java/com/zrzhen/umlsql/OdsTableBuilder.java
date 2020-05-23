@@ -6,14 +6,13 @@ import java.util.List;
 
 public class OdsTableBuilder {
     public static void main(String[] args) throws IOException {
-        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModelTrigger.sql";
+        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
+        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdzlOdsTable.sql";
 
-        List<TableModel> tableList = bufferedReader(filePath);
+        List<Table> tableList = bufferedReader(filePath);
         String sqlStr = "";
-        for (TableModel table : tableList) {
-            sqlStr += table.getTriggerInsert() + "\n\n";
-            sqlStr += table.getTriggerUpdate() + "\n\n";
+        for (Table table : tableList) {
+            sqlStr += table.getBuildSql() + "\n\n";
         }
 
         byte2File(sqlStr.getBytes(), savePath);
@@ -23,7 +22,7 @@ public class OdsTableBuilder {
     }
 
 
-    public static List<TableModel> bufferedReader(String filePath) {
+    public static List<Table> bufferedReader(String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
             System.out.println("File is not exist, file path:" + filePath);
@@ -38,16 +37,18 @@ public class OdsTableBuilder {
 
             String line;
 
-            List<TableModel> tableList = new ArrayList<>();
+            List<Table> tableList = new ArrayList<>();
+
             String name = "";
-            List<String> columnNames = new ArrayList<>();
+            String comment = "";
+            String columns = "";
 
 
             boolean matchLine = false;
             boolean nameLine = false;
             boolean end = false;
             while ((line = bufferedReader.readLine()) != null) {
-                line = line.trim();
+
                 if (match(line)) {
                     int aIndex = line.indexOf('`');
                     int aLastIndex = line.lastIndexOf('`');
@@ -61,57 +62,33 @@ public class OdsTableBuilder {
                     if (nameLine) {
                         nameLine = false;
                     } else {
-                        if (line.startsWith("PRIMARY")) {
+                        String line1 = line.trim();
+                        if (line1.startsWith("PRIMARY")) {
                             end = true;
-                        } else if (line.startsWith("`")) {
-                            int aIndex = line.indexOf('`');
-                            int aLastIndex = line.lastIndexOf('`');
-                            String columnName = line.substring(aIndex + 1, aLastIndex);
-                            columnNames.add(columnName);
+                        } else if (line1.startsWith("`")) {
+                            columns += line + "\n";
+
+                        } else if (line1.contains("COMMENT=")) {
+                            int aIndex = line.indexOf('\'');
+                            int aLastIndex = line.lastIndexOf('\'');
+                            comment = line.substring(aIndex + 1, aLastIndex);
+
                         } else if (end) {
-                            TableModel table = new TableModel();
-                            table.setTableName(name);
-                            table.setColumnNames(columnNames);
-
-
-                            String triggerInsert = "CREATE trigger " + name + "_insert  after insert on " + name
-                                    + " for each row \n begin\n insert into ods_" + name + "(";
-                            String triggerUpdate = "CREATE trigger " + name + "_update  after update on " + name
-                                    + " for each row \n begin\n insert into ods_" + name + "(";
-
-                            String values = "values (";
-
-                            int size = columnNames.size();
-                            for (int i = 0; i < size; i++) {
-                                String columnName = columnNames.get(i);
-                                if (i < size - 1) {
-                                    triggerInsert += columnName + ",";
-                                    triggerUpdate += columnName + ",";
-                                    values += "new." + columnName + ",";
-                                } else {
-                                    triggerInsert += columnName;
-                                    triggerUpdate += columnName;
-                                    values += "new." + columnName;
-                                }
-                            }
-
-
-                            triggerInsert += ") \n" + values;
-                            triggerInsert += ");\nend;";
-
-
-                            triggerUpdate +=") \n" + values;
-                            triggerUpdate += ");\nend;";
-
-                            table.setTriggerInsert(triggerInsert);
-                            table.setTriggerUpdate(triggerUpdate);
-
+                            Table table = new Table();
+                            table.setName(name);
+                            table.setComment(comment);
+                            table.setColumns(columns);
                             tableList.add(table);
 
+                            String buildSql = "CREATE TABLE `ods_" + name + "` (\n `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',\n" + columns + "\nPRIMARY KEY (`pk`) USING BTREE \n)  ENGINE="
+                                    + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';";
+
+                            table.setBuildSql(buildSql);
                             matchLine = false;
                             end = false;
                             name = "";
-                            columnNames = new ArrayList<>();
+                            comment = "";
+                            columns = "";
                         }
                     }
                 }

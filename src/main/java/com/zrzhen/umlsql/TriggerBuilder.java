@@ -5,9 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TriggerBuilder {
+
+    static String odsDbName = "ods_charge";
+
     public static void main(String[] args) throws IOException {
-        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModelTrigger.sql";
+        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
+        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdzTrigger.sql";
+
 
         List<TableModel> tableList = bufferedReader(filePath);
         String sqlStr = "";
@@ -75,9 +79,9 @@ public class TriggerBuilder {
 
 
                             String triggerInsert = "CREATE trigger " + name + "_insert  after insert on " + name
-                                    + " for each row \n begin\n insert into ods_" + name + "(";
+                                    + " for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
                             String triggerUpdate = "CREATE trigger " + name + "_update  after update on " + name
-                                    + " for each row \n begin\n insert into ods_" + name + "(";
+                                    + " for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
 
                             String values = "values (";
 
@@ -100,7 +104,7 @@ public class TriggerBuilder {
                             triggerInsert += ");\nend;";
 
 
-                            triggerUpdate +=") \n" + values;
+                            triggerUpdate += ") \n" + values;
                             triggerUpdate += ");\nend;";
 
                             table.setTriggerInsert(triggerInsert);
