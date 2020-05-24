@@ -1,32 +1,40 @@
-package com.zrzhen.umlsql;
+package com.zrzhen.umlsql.core;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OdsTableBuilder {
-    public static void main(String[] args) throws IOException {
-        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\ods_cdz.sql";
+/**
+ * 建表语句生成ods建表语句
+ * <p>
+ * String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
+ * String savePath = "E:\\github\\umlsql\\umlsql\\uml\\ods_cdz.sql";
+ * Sql2OdsConfig sql2OdsConfig = new Sql2OdsConfig(filePath, savePath);
+ */
+public class Sql2OdsUtil {
 
-        List<Table> tableList = bufferedReader(filePath);
-        String sqlStr = "";
-        for (Table table : tableList) {
-            sqlStr += table.getBuildSql() + "\n\n";
+
+    /**
+     * 转换并保存
+     * @param config
+     * @return
+     * @throws FileEmptyException
+     */
+    public static List<Table> transformAndSave(Sql2OdsConfig config) throws FileEmptyException {
+
+        String filePath = config.getSqlFilePath();
+
+        if (filePath == null || filePath.equals("")) {
+
+            throw new FileEmptyException("Uml file path should not be empty!");
         }
 
-        byte2File(sqlStr.getBytes(), savePath);
-
-        System.out.println(sqlStr);
-
-    }
-
-
-    public static List<Table> bufferedReader(String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
-            System.out.println("File is not exist, file path:" + filePath);
-            return null;
+            throw new FileEmptyException("Uml file is not exist, file path:" + filePath);
         }
 
         FileReader fileReader = null;
@@ -42,7 +50,6 @@ public class OdsTableBuilder {
             String name = "";
             String comment = "";
             String columns = "";
-
 
             boolean matchLine = false;
             boolean nameLine = false;
@@ -80,10 +87,14 @@ public class OdsTableBuilder {
                             table.setColumns(columns);
                             tableList.add(table);
 
-                            String buildSql = "CREATE TABLE `ods_" + name + "` (\n `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',\n" + columns + "\nPRIMARY KEY (`pk`) USING BTREE \n)  ENGINE="
-                                    + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';";
+                            String buildSql = "CREATE TABLE `ods_" + name + "` (\n `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',\n"
+                                    + columns + "\nPRIMARY KEY (`pk`) USING BTREE \n)  ENGINE="
+                                    + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
 
                             table.setBuildSql(buildSql);
+
+                            System.out.println(buildSql);
+
                             matchLine = false;
                             end = false;
                             name = "";
@@ -94,6 +105,9 @@ public class OdsTableBuilder {
                 }
 
             }
+
+            String sqlSavePath = config.getSqlSavePath();
+            saveSql(tableList, sqlSavePath);
 
             return tableList;
 
@@ -119,7 +133,13 @@ public class OdsTableBuilder {
         return null;
     }
 
-    public static boolean match(String line) {
+    /**
+     * 匹配建表语句开头
+     *
+     * @param line
+     * @return
+     */
+    private static boolean match(String line) {
         String line1 = line.trim().toUpperCase();
         if (line1.startsWith("CREATE TABLE")) {
             return true;
@@ -127,33 +147,14 @@ public class OdsTableBuilder {
         return false;
     }
 
-    /**
-     * 保存字节数组到磁盘上
-     *
-     * @param bytes 要保存的字节数组
-     * @param path  保存的路径，绝对路径
-     * @return true：保存成功；false：保存失败
-     */
-    public static boolean byte2File(byte[] bytes, String path) {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(path, false);
-            out.write(bytes);
-            return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
+    private static void saveSql(List<Table> tableList, String savePath) {
+
+        String sqlStr = "";
+        for (Table table : tableList) {
+            sqlStr += table.getBuildSql() + "\n\n";
         }
+
+        CommonUtil.byte2File(sqlStr.getBytes(), savePath);
     }
+
 }

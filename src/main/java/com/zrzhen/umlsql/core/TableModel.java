@@ -1,4 +1,4 @@
-package com.zrzhen.umlsql;
+package com.zrzhen.umlsql.core;
 
 import java.util.List;
 

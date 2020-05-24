@@ -1,37 +1,33 @@
-package com.zrzhen.umlsql;
+package com.zrzhen.umlsql.core;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class TriggerBuilder {
+/**
+ * String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
+ * String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz_trigger.sql";
+ * <p>
+ * OdsTriggerConfig sql2OdsConfig = new OdsTriggerConfig(filePath, savePath);
+ * <p>
+ * List<TableModel> tableList = transformAndSave(sql2OdsConfig);
+ */
+public class OdsTriggerUtil {
 
-    static String odsDbName = "ods_charge";
+    public static List<TableModel> transformAndSave(OdsTriggerConfig config) throws FileEmptyException {
+        String filePath = config.getSqlFilePath();
 
-    public static void main(String[] args) throws IOException {
-        String filePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz.sql";
-        String savePath = "E:\\github\\umlsql\\umlsql\\uml\\cdz_trigger.sql";
+        if (filePath == null || filePath.equals("")) {
 
-
-        List<TableModel> tableList = bufferedReader(filePath);
-        String sqlStr = "";
-        for (TableModel table : tableList) {
-            sqlStr += table.getTriggerInsert() + "\n\n";
-            sqlStr += table.getTriggerUpdate() + "\n\n";
+            throw new FileEmptyException("Uml file path should not be empty!");
         }
 
-        byte2File(sqlStr.getBytes(), savePath);
-
-        System.out.println(sqlStr);
-
-    }
-
-
-    public static List<TableModel> bufferedReader(String filePath) {
         File file = new File(filePath);
         if (!file.exists()) {
-            System.out.println("File is not exist, file path:" + filePath);
-            return null;
+            throw new FileEmptyException("Uml file is not exist, file path:" + filePath);
         }
 
         FileReader fileReader = null;
@@ -77,6 +73,8 @@ public class TriggerBuilder {
                             table.setTableName(name);
                             table.setColumnNames(columnNames);
 
+                            String odsDbName = config.getOdsDbName();
+
 
                             String triggerInsert = "CREATE trigger " + name + "_insert  after insert on `" + name
                                     + "` for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
@@ -101,14 +99,17 @@ public class TriggerBuilder {
 
 
                             triggerInsert += ") \n" + values;
-                            triggerInsert += ");\nend;";
+                            triggerInsert += ");\nend;\n";
 
 
                             triggerUpdate += ") \n" + values;
-                            triggerUpdate += ");\nend;";
+                            triggerUpdate += ");\nend;\n";
 
                             table.setTriggerInsert(triggerInsert);
                             table.setTriggerUpdate(triggerUpdate);
+
+                            System.out.println(triggerInsert);
+                            System.out.println(triggerUpdate);
 
                             tableList.add(table);
 
@@ -121,6 +122,9 @@ public class TriggerBuilder {
                 }
 
             }
+
+            String sqlSavePath = config.getSqlSavePath();
+            saveSql(tableList, sqlSavePath);
 
             return tableList;
 
@@ -146,7 +150,7 @@ public class TriggerBuilder {
         return null;
     }
 
-    public static boolean match(String line) {
+    private static boolean match(String line) {
         String line1 = line.trim().toUpperCase();
         if (line1.startsWith("CREATE TABLE")) {
             return true;
@@ -154,33 +158,14 @@ public class TriggerBuilder {
         return false;
     }
 
-    /**
-     * 保存字节数组到磁盘上
-     *
-     * @param bytes 要保存的字节数组
-     * @param path  保存的路径，绝对路径
-     * @return true：保存成功；false：保存失败
-     */
-    public static boolean byte2File(byte[] bytes, String path) {
-        FileOutputStream out = null;
-        try {
-            out = new FileOutputStream(path, false);
-            out.write(bytes);
-            return true;
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            return false;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
+    private static void saveSql(List<TableModel> tableList, String savePath) {
+
+        String sqlStr = "";
+        for (TableModel table : tableList) {
+            sqlStr += table.getTriggerInsert() + "\n\n";
+            sqlStr += table.getTriggerUpdate() + "\n\n";
         }
+
+        CommonUtil.byte2File(sqlStr.getBytes(), savePath);
     }
 }

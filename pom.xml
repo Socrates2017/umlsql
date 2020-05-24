@@ -19,29 +19,33 @@
             <artifactId>logback-classic</artifactId>
             <version>1.1.7</version>
         </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-        </dependency>
+
+<!--        <dependency>-->
+<!--            <groupId>org.assertj</groupId>-->
+<!--            <artifactId>assertj-core</artifactId>-->
+<!--            &lt;!&ndash; use 2.4.1 for Java 7 projects &ndash;&gt;-->
+<!--            <version>2.4.1</version>-->
+<!--            &lt;!&ndash; <version>3.4.1</version> &ndash;&gt;-->
+<!--            <scope>test</scope>-->
+<!--        </dependency>-->
 
 
     </dependencies>
 
     <!-- 设定主仓库，按设定顺序进行查找。 -->
-    <repositories>
-        <!-- 阿里maven仓库 -->
-        <!-- 		<repository>
-                    <id>aliyun</id>
-                    <name>ali nexus</name>
-                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
-                </repository> -->
-        <repository>
-            <id>nexus-release</id>
-            <name>nexus Release</name>
-            <url>http://192.168.148.68:8081/nexus/content/groups/public</url>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        &lt;!&ndash; 阿里maven仓库 &ndash;&gt;-->
+<!--        <repository>-->
+<!--            <id>aliyun</id>-->
+<!--            <name>ali nexus</name>-->
+<!--            <url>http://maven.aliyun.com/nexus/content/groups/public</url>-->
+<!--        </repository>-->
+<!--        <repository>-->
+<!--            <id>nexus-release</id>-->
+<!--            <name>nexus Release</name>-->
+<!--            <url>http://192.168.148.68:8081/nexus/content/groups/public</url>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
     <distributionManagement>
         <repository>
