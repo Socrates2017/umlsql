@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.puml";
+        String umlFilePath = "E:\\github\\zetty\\cms\\doc\\cdz.puml";
         String sqlPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.sql";
         String odsPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_ods.sql";
         String triggerPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_trigger.sql";

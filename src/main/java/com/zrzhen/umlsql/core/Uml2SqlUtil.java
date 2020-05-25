@@ -85,7 +85,7 @@ public class Uml2SqlUtil {
                             columns = CommonUtil.trimEnd(columns);
 
                             if (columns.endsWith("\n")) {
-                                columns = columns.substring(0, columns.length() - 2);
+                                columns = columns.substring(0, columns.length() - 1);
                             }
 
                             String buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE\n)  ENGINE="
