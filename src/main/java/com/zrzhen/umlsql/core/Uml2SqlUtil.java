@@ -71,7 +71,7 @@ public class Uml2SqlUtil {
                     if (nameLine) {
                         nameLine = false;
                     } else {
-                        if (line.startsWith("}")) {
+                        if (line.trim().startsWith("}")) {
                             end = true;
                         } else if (!end) {
                             columns += line + "\n";
@@ -139,7 +139,7 @@ public class Uml2SqlUtil {
      * @return
      */
     private static boolean match(String line) {
-        String line1 = line.trim().toLowerCase();
+        line = line.trim().toLowerCase();
 
         List<String> tables = new ArrayList<>();
         tables.add("CenterTable");
@@ -149,7 +149,7 @@ public class Uml2SqlUtil {
         tables.add("BehaviourTable");
 
         for (String table : tables) {
-            if (line1.startsWith(table.toLowerCase())) {
+            if (line.startsWith(table.toLowerCase())) {
                 return true;
             }
         }

@@ -1,56 +1,35 @@
-@startuml
-
-/'中心表'/
-!define CenterTable(name,desc) class name as "desc" << (C,#FF4500) >>
-/'详情表'/
-!define DetailTable(name,desc) class name as "desc" << (D,#FFE4E1) >>
-/'卫星表'/
-!define SatelliteTable(name,desc) class name as "desc" << (S,#FFDEAD) >>
-/'关系表'/
-!define RelationTable(name,desc) class name as "desc" << (R,#87CEFA) >>
-/'行为表'/
-!define BehaviourTable(name,desc) class name as "desc" << (B,#7FFFD4) >>
-
-!define varchar(x) varchar x
-!define tinyint(x) tinyint x
-!define smallint(x) smallint x
-!define mediumint(x) mediumint x
-!define int(x) bigint x
-!define bigint(x) bigint x
-!define decimal(x,y) decimal x,y
-
-hide methods
-hide stereotypes
-
-
-package 商户模块 <<Frame>> {
-    CenterTable(merchant, "商家表\n(标识一个商家)"){
+CREATE TABLE `ods_merchant` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `phone` varchar(256) DEFAULT '' COMMENT '手机',
         `password` varchar(256) DEFAULT '' COMMENT '密码',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-    DetailTable(merchant_detail, "商家详情表\n(标识一个商家)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='商家表\n(标识一个商家)';
+
+
+CREATE TABLE `ods_merchant_detail` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `merchant_id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `name` varchar(256) DEFAULT '' COMMENT '名称',
         `address` varchar(256) DEFAULT '' COMMENT '地址',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`merchant_id`)
-    }
 
-    BehaviourTable(merchant_login_record, "商家登陆记录表\n(标识一次商家登陆行为)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='商家详情表\n(标识一个商家)';
+
+
+CREATE TABLE `ods_merchant_login_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `merchant_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
         `phone_models` varchar(256) DEFAULT '' COMMENT '手机型号',
@@ -59,77 +38,85 @@ package 商户模块 <<Frame>> {
         `ip` varchar(256) DEFAULT NULL COMMENT 'ip地址',
         `latitude` decimal(10,7) DEFAULT NULL COMMENT '纬度',
         `longitude` decimal(10,7) DEFAULT NULL COMMENT '经度',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-    SatelliteTable(merchant_third, "第三方登录商户表\n(标识一个第三方账户，关联商户)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='商家登陆记录表\n(标识一次商家登陆行为)';
+
+
+CREATE TABLE `ods_merchant_third` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `type` tinyint(4) NOT NULL COMMENT '类型，1：支付宝；2：微信',
         `third_id` varchar(256) NOT NULL COMMENT '第三方账户标识',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
         `name` varchar(256) DEFAULT '' COMMENT '名称',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`type`,`third_id`)
-    }
-}
 
-package 用户模块 <<Frame>> {
-    CenterTable(user, "用户表\n(标识一个用户)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='第三方登录商户表\n(标识一个第三方账户，关联商户)';
+
+
+CREATE TABLE `ods_user` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `type` tinyint(4) DEFAULT '-1' COMMENT '用户类型,0:个人用户；1：企业用户；-1：未知',
         `phone` varchar(256) DEFAULT '' COMMENT '手机',
         `password` varchar(256) DEFAULT '' COMMENT '密码',
         `status` tinyint(4) DEFAULT NULL COMMENT '状态',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-    DetailTable(user_detail, "用户详情表\n(标识一个用户)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='用户表\n(标识一个用户)';
+
+
+CREATE TABLE `ods_user_detail` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `user_id` bigint(64) unsigned NOT NULL COMMENT '主键，等同于user表的id',
         `group_id` bigint(64) unsigned DEFAULT NULL COMMENT '团体所属',
         `name` varchar(256) DEFAULT '' COMMENT '姓名、企业名',
         `nick_name` varchar(256) DEFAULT '' COMMENT '昵称',
         `id_number` varchar(256) DEFAULT '' COMMENT '身份证号',
         `sex` tinyint(4) DEFAULT '-1' COMMENT '性别,0:女；1：男；-1：未知',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`user_id`)
-    }
 
-    SatelliteTable(user_third, "第三方登录用户表\n(标识一个第三方账户，关联用户)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='用户详情表\n(标识一个用户)';
+
+
+CREATE TABLE `ods_user_third` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `type` tinyint(4) NOT NULL COMMENT '类型，1：支付宝；2：微信',
         `third_id` varchar(256) NOT NULL COMMENT '第三方账户标识',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
         `name` varchar(256) DEFAULT NULL COMMENT '第三方账户姓名',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`type`,`third_id`)
-    }
 
-    BehaviourTable(user_login_record, "用户登陆记录表\n(标识一次用户登陆行为)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='第三方登录用户表\n(标识一个第三方账户，关联用户)';
+
+
+CREATE TABLE `ods_user_login_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
         `phone_models` varchar(256) DEFAULT '' COMMENT '手机型号',
@@ -138,16 +125,18 @@ package 用户模块 <<Frame>> {
         `ip` varchar(256) DEFAULT NULL COMMENT 'ip地址',
         `latitude` decimal(10,7) DEFAULT NULL COMMENT '纬度',
         `longitude` decimal(10,7) DEFAULT NULL COMMENT '经度',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-    CenterTable(car, "车辆表\n(标识一个车辆)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='用户登陆记录表\n(标识一次用户登陆行为)';
+
+
+CREATE TABLE `ods_car` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
         `vin` varchar(256) DEFAULT '' COMMENT 'vin码',
@@ -155,18 +144,18 @@ package 用户模块 <<Frame>> {
         `self_number` varchar(256) DEFAULT '' COMMENT '自编号',
         `brand` varchar(256) DEFAULT '' COMMENT '品牌',
         `category` varchar(256) DEFAULT '-1' COMMENT '车辆分类',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
-}
 
-package 订单模块 <<Frame>> {
-    CenterTable(order, "订单表\n(标识一个订单)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='车辆表\n(标识一个车辆)';
+
+
+CREATE TABLE `ods_order` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `status` tinyint(4) DEFAULT '-1' COMMENT '状态，-1：创建，未确认；0：已确认；1：已支付；2：已完成；-2：已取消',
         `sn` bigint(32) unsigned DEFAULT NULL COMMENT '订单编号',
@@ -174,33 +163,33 @@ package 订单模块 <<Frame>> {
         `merchant_id` bigint(64) unsigned DEFAULT NULL COMMENT '商户id',
         `cg_id` bigint(64) unsigned DEFAULT NULL COMMENT '充电枪id',
         `money` decimal(10,2) DEFAULT NULL COMMENT '金额',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-         PRIMARY KEY (`id`)
-    }
 
-    DetailTable(order_detail, "订单详情表\n(标识一个订单)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='订单表\n(标识一个订单)';
+
+
+CREATE TABLE `ods_order_detail` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
          `order_id` bigint(64) unsigned NOT NULL COMMENT '主键',
          `cp_id` bigint(64) unsigned DEFAULT NULL COMMENT '充电桩id',
          `car_id` bigint(64) unsigned DEFAULT NULL COMMENT '车辆id',
-
          `version` int(8) DEFAULT '0' COMMENT '版本',
          `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
          `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
          `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
          `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-         PRIMARY KEY (`order_id`)
-    }
-}
+
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='订单详情表\n(标识一个订单)';
 
 
-package 支付模块 <<Frame>> {
-
-    BehaviourTable(pay_record, "支付记录表\n(标识一次支付行为)"){
+CREATE TABLE `ods_pay_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
          `id` bigint(64) unsigned NOT NULL COMMENT '主键',
          `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id',
          `order_id` bigint(64) unsigned DEFAULT NULL COMMENT '订单id',
@@ -208,131 +197,96 @@ package 支付模块 <<Frame>> {
          `type` tinyint(4) DEFAULT '-1' COMMENT '支付类型；0：微信；1：支付宝；2：账户余额支付',
          `sn_third` varchar(256) DEFAULT '' COMMENT '第三方流水标识；如果是余额支付；则为balance_pay_record表的sn字段',
          `status` tinyint(4) DEFAULT '-1' COMMENT '状态；0：支付失败；1：支付成功',
-
          `version` int(8) DEFAULT '0' COMMENT '版本',
          `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
          `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
          `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
          `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-         PRIMARY KEY (`id`)
-    }
 
-    CenterTable(wallet, "用户钱包表\n(标识一个用户钱包)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='支付记录表\n(标识一次支付行为)';
+
+
+CREATE TABLE `ods_wallet` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `user_id` bigint(64) unsigned NOT NULL COMMENT '主键，用户id',
         `money` decimal(10,2) DEFAULT NULL COMMENT '账户余额',
         `status` tinyint(4) DEFAULT NULL COMMENT '状态',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`user_id`)
-    }
 
-    BehaviourTable(deposit_record, "充值记录表\n(标识一次充值行为)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='用户钱包表\n(标识一个用户钱包)';
+
+
+CREATE TABLE `ods_deposit_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id,钱包id',
         `money` decimal(10,2) DEFAULT NULL COMMENT '金额',
         `type` tinyint(4) DEFAULT '-1' COMMENT '支付类型；0：微信；1：支付宝',
         `sn` varchar(256) DEFAULT '' COMMENT '第三方流水标识',
         `status` tinyint(4) DEFAULT '-1' COMMENT '状态；0：充值失败；1：充值成功',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-    BehaviourTable(balance_pay_record, "余额支付记录表\n(标识一次通过余额支付的行为)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='充值记录表\n(标识一次充值行为)';
+
+
+CREATE TABLE `ods_balance_pay_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
         `id` bigint(64) unsigned NOT NULL COMMENT '主键',
         `user_id` bigint(64) unsigned DEFAULT NULL COMMENT '用户id,钱包id',
         `money` decimal(10,2) DEFAULT NULL COMMENT '金额',
         `sn` varchar(256) DEFAULT '' COMMENT '流水号',
         `status` tinyint(4) DEFAULT '-1' COMMENT '状态；0：支付失败；1：支付成功',
-
         `version` int(8) DEFAULT '0' COMMENT '版本',
         `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
         `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
         `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
         `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-        PRIMARY KEY (`id`)
-    }
 
-  BehaviourTable(withdraw_record, "提现记录表\n(标识一次商家提现行为)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='余额支付记录表\n(标识一次通过余额支付的行为)';
+
+
+CREATE TABLE `ods_withdraw_record` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
       `id` bigint(64) unsigned NOT NULL COMMENT '主键',
       `merchant_id` bigint(64) unsigned DEFAULT NULL COMMENT '商户id,钱包id',
       `money` decimal(10,2) DEFAULT NULL COMMENT '金额',
       `type` tinyint(4) DEFAULT '-1' COMMENT '支付类型；0：微信；1：支付宝',
       `sn_third` varchar(256) DEFAULT '' COMMENT '第三方流水标识',
       `status` tinyint(4) DEFAULT '-1' COMMENT '状态；0：提现失败；1：提现成功',
-
       `version` int(8) DEFAULT '0' COMMENT '版本',
       `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
       `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
       `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
       `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-      PRIMARY KEY (`id`)
-  }
 
-  CenterTable(merchant_wallet, "商户钱包表\n(标识一个商户钱包，用来记录商户的账户余额)"){
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='提现记录表\n(标识一次商家提现行为)';
+
+
+CREATE TABLE `ods_merchant_wallet` (
+ `pk` bigint(64) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ods主键',
       `merchant_id` bigint(64) unsigned NOT NULL COMMENT '主键，商户id',
       `money` decimal(10,2) DEFAULT NULL COMMENT '账户余额',
       `status` tinyint(4) DEFAULT NULL COMMENT '状态',
-
       `version` int(8) DEFAULT '0' COMMENT '版本',
       `creator` bigint(64) unsigned DEFAULT NULL COMMENT '创建者',
       `updator` bigint(64) unsigned DEFAULT NULL COMMENT '更新者',
       `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
       `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
-      PRIMARY KEY (`merchant_id`)
-  }
-}
+
+PRIMARY KEY (`pk`) USING BTREE 
+)  ENGINE=InnoDB CHARSET=utf8mb4 COMMENT='商户钱包表\n(标识一个商户钱包，用来记录商户的账户余额)';
 
 
-
-/'用户'/
-user -- user_detail : 1:1
-user_third }-- user : 1:n
-user_login_record }-- user : 1:n
-
-/'商家'/
-merchant -- merchant_detail : 1:1
-merchant_third }-- merchant : 1:n
-merchant_login_record }-- merchant : 1:n
-
-/'商户钱包'/
-merchant_wallet -- merchant : 1:1
-
-/'提现'/
-withdraw_record }-- merchant : 1:n
-withdraw_record }-- merchant_wallet : 1:n
-
-/'订单'/
-order -- order_detail : 1:1
-order }-- user : 1:n
-order }-- merchant : 1:n /'充电桩商家有可能变动，所以，订单记录下单时的商家'/
-order }-- charge_gun : 1:n
-order_detail }-- charge_pile : 1:n
-order_detail }-- car : 1:n
-
-/'支付'/
-pay_record }-- order : 1:n
-pay_record }-- user : 1:n
-pay_record }-- balance_pay_record : 1:1
-
-/'钱包'/
-wallet -- user : 1:1
-
-/'充值'/
-deposit_record }-- user : 1:n
-deposit_record }-- wallet : 1:n
-
-/'余额支付'/
-balance_pay_record }-- user : 1:n
-balance_pay_record }-- wallet : 1:n
-
-
-@enduml
