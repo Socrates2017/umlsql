@@ -6,10 +6,10 @@ public class Main {
 
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.puml";
-        String sqlPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel.sql";
-        String odsPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_ods.sql";
-        String triggerPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_trigger.sql";
+        String umlFilePath = "D:\\chananlian\\private\\zetty\\cms\\doc\\cdztable.puml";
+        String sqlPath = "D:\\chananlian\\private\\umlsql\\uml\\dataModel.sql";
+        String odsPath = "D:\\chananlian\\private\\umlsql\\uml\\dataModel_ods.sql";
+        String triggerPath = "D:\\chananlian\\private\\umlsql\\uml\\dataModel_trigger.sql";
 
         Uml2SqlConfig uml2SqlConfig = new Uml2SqlConfig(umlFilePath, sqlPath);
         Sql2OdsConfig sql2OdsConfig = new Sql2OdsConfig(sqlPath, odsPath);
