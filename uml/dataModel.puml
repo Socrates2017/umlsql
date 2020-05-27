@@ -337,8 +337,6 @@ withdraw_record }-- merchant_wallet : 1:n
 order -- order_detail : 1:1
 order }-- user : 1:n
 order }-- merchant : 1:n /'充电桩商家有可能变动，所以，订单记录下单时的商家'/
-order }-- charge_gun : 1:n
-order_detail }-- charge_pile : 1:n
 order_detail }-- car : 1:n
 
 /'支付'/
@@ -361,8 +359,6 @@ balance_pay_record }-- wallet : 1:n
 /'车辆'/
 car }-- user : 1:n
 
-/'计费规则'/
-fee_rule }-- charge_pile : 1:n
 
 
 
