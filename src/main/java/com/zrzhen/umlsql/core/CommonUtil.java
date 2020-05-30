@@ -52,4 +52,31 @@ public class CommonUtil {
             }
         }
     }
+
+    public static FilePath parseFilePath(String umlFilePath) {
+
+        int index = umlFilePath.lastIndexOf("\\");
+
+        if (index > 0) {
+        } else {
+            index = umlFilePath.lastIndexOf("/");
+        }
+        FilePath filePath = new FilePath();
+        String path = umlFilePath.substring(0, index + 1);
+        String nameAndPo = umlFilePath.substring(index + 1);
+
+        int index2 = nameAndPo.lastIndexOf(".");
+
+        filePath.setPath(path);
+        if (index2 > 0) {
+            String name = nameAndPo.substring(0, index2);
+            String postfix = nameAndPo.substring(index2 + 1);
+            filePath.setName(name);
+            filePath.setPostfix(postfix);
+        } else {
+            filePath.setName(nameAndPo);
+        }
+        return filePath;
+    }
+
 }
