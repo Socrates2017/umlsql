@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "E:\\github\\zetty\\cms\\doc\\cdztable.puml";
+        String umlFilePath = "D:\\chenanlian\\github\\book\\doc\\ddl.puml";
 
         FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
 
@@ -19,7 +19,7 @@ public class Main {
         Sql2OdsConfig sql2OdsConfig = new Sql2OdsConfig(sqlPath, odsPath);
 
         OdsTriggerConfig odsTriggerConfig = new OdsTriggerConfig(sqlPath, triggerPath);
-        odsTriggerConfig.setOdsDbName("ods_charge");
+        odsTriggerConfig.setOdsDbName("");
 
         Uml2SqlUtil.transformAndSave(uml2SqlConfig);
         Sql2OdsUtil.transformAndSave(sql2OdsConfig);

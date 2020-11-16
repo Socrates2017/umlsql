@@ -142,15 +142,13 @@ public class Uml2SqlUtil {
         line = line.trim().toLowerCase();
 
         List<String> tables = new ArrayList<>();
-        tables.add("CenterTable");
+        tables.add("EntityTable");
         tables.add("SubsetTable");
-        tables.add("SubsetCenterTable");
-        tables.add("FunctionTable");
         tables.add("RelationTable");
-        tables.add("BusinessCenterTable");
-        tables.add("BusinessTable");
-        tables.add("BehaviourRecordTable");
-        tables.add("VerificationTable");
+        tables.add("LogRecordTable");
+        tables.add("CommonTable");
+        tables.add("DwTable");
+
 
         for (String table : tables) {
             if (line.startsWith(table.toLowerCase())) {

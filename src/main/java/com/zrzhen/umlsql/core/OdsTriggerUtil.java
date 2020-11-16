@@ -75,11 +75,17 @@ public class OdsTriggerUtil {
 
                             String odsDbName = config.getOdsDbName();
 
+                            if (odsDbName == null || odsDbName.equalsIgnoreCase("")) {
+                                odsDbName = "";
+                            } else {
+                                odsDbName = odsDbName + ".";
+                            }
+
 
                             String triggerInsert = "CREATE trigger " + name + "_insert  after insert on `" + name
-                                    + "` for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
+                                    + "` for each row \n begin\n insert into " + odsDbName + "ods_" + name + "(";
                             String triggerUpdate = "CREATE trigger " + name + "_update  after update on `" + name
-                                    + "` for each row \n begin\n insert into " + odsDbName + ".ods_" + name + "(";
+                                    + "` for each row \n begin\n insert into " + odsDbName + "ods_" + name + "(";
 
                             String values = "values (";
 
