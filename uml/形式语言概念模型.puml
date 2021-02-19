@@ -6,13 +6,13 @@ sprite $aComponent jar:archimate/application-component
 sprite $bEvent jar:archimate/business-event
 sprite $aEquipment jar:archimate/physical-equipment
 
-title 形式语言模型
+title 形式语言概念模型
 
 node  "名称" #TECHNOLOGY{
 
     node  "通名" #TECHNOLOGY{
 
-        node  "分类通名" as 分类通名 #TECHNOLOGY{
+        node  "原始通名" as 原始通名 #TECHNOLOGY{
             archimate #Business "原子"
             archimate #Business "结构"
             archimate #Business "运动"
@@ -22,43 +22,50 @@ node  "名称" #TECHNOLOGY{
 
         node  "关系通名" as 关系通名 #TECHNOLOGY{
             archimate #Business "就职关系（员工,单位）"
+
+            node  "语法关系" as 语法关系 #TECHNOLOGY{
+                archimate #Business "元素集合关系（元素,集合）"
+                archimate #Business "父子集关系（元素,集合）"
+                archimate #Business "同属集合关系（元素,元素）"
+            }
         }
 
         node  "组合通名" as 组合通名  #TECHNOLOGY{
             archimate #Business "原子的结构(x.y)"
         }
 
-        node  "语法关系" as 语法关系 #TECHNOLOGY{
-            archimate #Business "元素集合关系（元素,集合）"
-            archimate #Business "父子集关系（元素,集合）"
-            archimate #Business "同属集合关系（元素,元素）"
-        }
-
-        分类通名 --> 组合通名:生成
-
-
+        原始通名 --> 组合通名:生成
     }
 
     node  "专名" #TECHNOLOGY{
         node  "普通专名" #TECHNOLOGY{
-
+            archimate #Business "张三"
+            archimate #Business "特朗普"
+            archimate #Business "二战"
         }
 
         node  "代词" #TECHNOLOGY{
-
-        }
-
-        node  "限定摹状词" #TECHNOLOGY{
-
+            archimate #Business "这个"
+            archimate #Business "那个"
         }
     }
 }
 
-node  "真值语句（事实）" as 真值语句 #TECHNOLOGY{
+node  "事实" as 事实 #TECHNOLOGY{
 
+    node  "通名事实" as 通名事实 #TECHNOLOGY{
+
+    }
+
+    node  "专名事实" as 专名事实 #TECHNOLOGY{
+
+    }
+
+    专名 --> 专名事实:赋值
+    通名 --> 通名事实:赋值
 }
 
-语法关系 --> 真值语句:赋值得到
+
 
 
 
