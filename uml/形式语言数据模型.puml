@@ -34,14 +34,14 @@ skinparam class {
 
 package 类 <<Frame>> #EAEAEA{
 
-    EntityTable(signal_name, "分类通名，自然语言中的分类、性质、行为等。如红色、颜色"){
+    EntityTable(common_signal_name, "原始通名，自然语言中的分类、性质、行为等。如红色、颜色"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `name`                varchar(64) comment '名称',
         `memo`                varchar(255) comment '说明',
         PRIMARY KEY (`id`)
     }
 
-    EntityTable(compose_name, "组合通名"){
+    EntityTable(common_compose_name, "组合通名"){
         `name`                varchar(64) comment '原子.结构',
         `original_id`                varchar(64) comment 'id.id',
         `memo`                varchar(255) comment '说明',
@@ -55,41 +55,42 @@ package 类 <<Frame>> #EAEAEA{
         PRIMARY KEY (`id`)
     }
 
-    RelationTable(relation_value, "关系赋值。如元素集合关系。元素集合关系(红色，颜色)"){
+    RelationTable(common_fact, "通名事实。如元素集合关系。元素集合关系(红色，颜色)"){
         `id` bigint(20) NOT NULL COMMENT '主键',
-        `relation_id`         bigint(20) NOT NULL comment 'cla_relation主键',
-        `nature_src_id`       bigint(20) comment '源，cla_nature主键',
-        `nature_dest_id`      bigint(20) comment '目标，cla_nature主键',
+        `relation_id`         bigint(20) NOT NULL comment 'common_relation主键',
+        `src_id`       bigint(20) comment '源，通名',
+        `dest_id`      bigint(20) comment '目标，通名',
         PRIMARY KEY (`id`)
     }
 
-    signal_name }-- relation_value:关系源
-    signal_name }-- relation_value:关系目标
-    common_relation }-- relation_value:关系
+    common_signal_name }-- common_fact:关系源
+    common_signal_name }-- common_fact:关系目标
+    common_relation }-- common_fact:关系
 
 
 }
 
-package 对象 <<Frame>> #EAEAEA{
+package 专名 <<Frame>> #EAEAEA{
 
-    EntityTable(obj, "对象"){
+    EntityTable(proper_name, "专名"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `name`                varchar(64) comment '名称',
         `memo`                varchar(255) comment '说明',
         PRIMARY KEY (`id`)
     }
 
-    RelationTable(obj_relation_value, "对象赋值，关联一个对象与一元函数，一个二元函数。如元素集合关系。元素集合关系(张三，红色)"){
+    RelationTable(proper_fact, "专名事实"){
         `id` bigint(20) NOT NULL COMMENT '主键',
-        `relation_id`         bigint(20) NOT NULL comment 'cla_relation主键',
-        `obj_src_id`       bigint(20) comment '源，obj主键',
-        `nature_dest_id`      bigint(20) comment '目标，cla_nature主键',
+        `relation_id`         bigint(20) NOT NULL comment 'common_relation主键',
+        `src_id`       bigint(20) comment '源，专名',
+        `dest_id`      bigint(20) comment '目标，专名或通名',
+        `dest_type`      int(11) comment '目标类型，1专名；2通名',
         PRIMARY KEY (`id`)
     }
 
-    obj }-- obj_relation_value:关系源
-    signal_name }-- obj_relation_value:关系目标
-    common_relation }-- obj_relation_value:关系
+    proper_name }-- proper_fact:关系源
+    common_signal_name }-- proper_fact:关系目标
+    common_relation }-- proper_fact:关系
 
 
 }
