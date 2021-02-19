@@ -20,12 +20,12 @@ node  "名称" #TECHNOLOGY{
             archimate #Business "职业"
         }
 
-        node  "组合通名" as 组合通名  #TECHNOLOGY{
-            archimate #Business "原子的结构(x.y)"
-        }
-
         node  "关系通名" as 关系通名 #TECHNOLOGY{
             archimate #Business "就职关系（员工,单位）"
+        }
+
+        node  "组合通名" as 组合通名  #TECHNOLOGY{
+            archimate #Business "原子的结构(x.y)"
         }
 
         node  "语法关系" as 语法关系 #TECHNOLOGY{
@@ -33,6 +33,10 @@ node  "名称" #TECHNOLOGY{
             archimate #Business "父子集关系（元素,集合）"
             archimate #Business "同属集合关系（元素,元素）"
         }
+
+        分类通名 --> 组合通名:生成
+
+
     }
 
     node  "专名" #TECHNOLOGY{

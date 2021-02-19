@@ -34,21 +34,28 @@ skinparam class {
 
 package 类 <<Frame>> #EAEAEA{
 
-    EntityTable(cla_nature, "自然类，自然语言中的分类、性质、行为等，可表示为一元函数。如红色、颜色"){
+    EntityTable(signal_name, "分类通名，自然语言中的分类、性质、行为等。如红色、颜色"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `name`                varchar(64) comment '名称',
         `memo`                varchar(255) comment '说明',
         PRIMARY KEY (`id`)
     }
 
-    EntityTable(cla_relation, "关系类，自然语言中的关系，可表示为二元函数，关联两个一元函数。如元素集合关系"){
+    EntityTable(compose_name, "组合通名"){
+        `name`                varchar(64) comment '原子.结构',
+        `original_id`                varchar(64) comment 'id.id',
+        `memo`                varchar(255) comment '说明',
+        PRIMARY KEY (`id`)
+    }
+
+    EntityTable(common_relation, "关系通名，自然语言中的关系。如就职关系"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `name`                varchar(64) comment '名称',
         `memo`                varchar(255) comment '说明',
         PRIMARY KEY (`id`)
     }
 
-    RelationTable(cla_relation_value, "关系赋值，自然语言中的关系赋值，关联两个一元函数，二元函数。如元素集合关系。元素集合关系(红色，颜色)"){
+    RelationTable(relation_value, "关系赋值。如元素集合关系。元素集合关系(红色，颜色)"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `relation_id`         bigint(20) NOT NULL comment 'cla_relation主键',
         `nature_src_id`       bigint(20) comment '源，cla_nature主键',
@@ -56,9 +63,9 @@ package 类 <<Frame>> #EAEAEA{
         PRIMARY KEY (`id`)
     }
 
-    cla_nature }-- cla_relation_value:关系源
-    cla_nature }-- cla_relation_value:关系目标
-    cla_relation }-- cla_relation_value:关系
+    signal_name }-- relation_value:关系源
+    signal_name }-- relation_value:关系目标
+    common_relation }-- relation_value:关系
 
 
 }
@@ -81,8 +88,8 @@ package 对象 <<Frame>> #EAEAEA{
     }
 
     obj }-- obj_relation_value:关系源
-    cla_nature }-- obj_relation_value:关系目标
-    cla_relation }-- obj_relation_value:关系
+    signal_name }-- obj_relation_value:关系目标
+    common_relation }-- obj_relation_value:关系
 
 
 }
