@@ -42,6 +42,7 @@ package 通名 <<Frame>> #EAEAEA{
     }
 
     EntityTable(common_compose_name, "组合通名"){
+        `id` bigint(20) NOT NULL COMMENT '主键',
         `name`                varchar(64) comment '原子.结构',
         `original_id`                varchar(64) comment 'id.id',
         `memo`                varchar(255) comment '说明',
