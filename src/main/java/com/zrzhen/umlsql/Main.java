@@ -6,7 +6,7 @@ public class Main {
 
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "D:\\chenanlian\\github\\book\\doc\\ddl.puml";
+        String umlFilePath = "D:\\chenanlian\\github\\umlsql\\uml\\形式语言数据模型.puml";
 
         FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
 
