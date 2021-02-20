@@ -1,0 +1,105 @@
+@startuml
+
+/'实体表'/
+!define EntityTable(name,desc) class name as "desc" << (E,#FF3030) >>  #CORNSILK
+/'子集表'/
+!define SubsetTable(name,desc) class name as "desc" << (S,#FFDEAD) >>
+/'关系表'/
+!define RelationTable(name,desc) class name as "desc" << (R,#D9F4EF) >>  #D9F4EF
+/'日志表'/
+!define LogRecordTable(name,desc) class name as "desc" << (L,#8DB6CD) >>
+/'验证表'/
+!define CommonTable(name,desc) class name as "desc" << (C,#B5B5B5) >>
+
+
+
+!define varchar(x) varchar x
+!define tinyint(x) tinyint x
+!define smallint(x) smallint x
+!define mediumint(x) mediumint x
+!define int(x) int x
+!define bigint(x) bigint x
+!define decimal(x,y) decimal x,y
+
+hide methods
+hide stereotypes
+
+skinparam class {
+    BackgroundColor white
+    ArrowColor red
+    BorderColor MidnightBlue
+}
+
+
+
+package 通名 <<Frame>> #EAEAEA{
+
+    EntityTable(name, "名称"){
+        `id` bigint(20) NOT NULL COMMENT '主键',
+        `name`                varchar(64) comment '名称',
+        `memo`                varchar(255) comment '说明',
+        `type`                int(11) comment '10001原始通名；10002组合通名，原子.结构；10003关系通名，自然语言中的关系。如就职关系；20001专名；20002专名+通名，张三.姓名',
+        PRIMARY KEY (`id`)
+    }
+
+    RelationTable(fact, "事实。元素集合关系(红色，颜色)"){
+        `id` bigint(20) NOT NULL COMMENT '主键',
+        `relation_id`         bigint(20) NOT NULL comment 'common_relation主键',
+        `src_id`       bigint(20) comment '源，通名',
+        `dest_id`      bigint(20) comment '目标，通名',
+        `src_type`      int(11) comment '目标类型，1专名；2通名',
+        `dest_type`      int(11) comment '目标类型，1专名；2通名',
+
+        PRIMARY KEY (`id`)
+    }
+
+    name }-- fact:关系源
+    name }-- fact:关系目标
+    name }-- fact:关系
+
+}
+
+
+
+legend left
+====
+原子是物质构成部分
+原子结构是圆周运动
+圆周运动是，x以y为中心的周期运动
+周期运动是，每隔时间为t的循环
+太阳系结构是圆周运动
+原子类似太阳系
+
+====
+
+原子的结构与圆周运动的区别？
+原子的结构可以拆分为两个有意义的部分：原子、结构
+圆周运动是不可拆分的，不能拆分为圆周、运动两个独立的部分，独立的圆周是不可理解的
+----
+
+元素集合关系，元素集合(元素,集合)
+原子的结构是圆周运动集合中的一个元素
+原子的结构是圆周运动
+元素集合(的(原子,结构),圆周运动)
+太阳系的结构是圆周运动
+元素集合(的(太阳系,结构),圆周运动)
+
+原子的结构跟太阳系的结构一样
+原子的结构类似太阳系
+原子就像太阳系，它们的结构都是圆周运动。
+
+同属一个集合，同属集合(元素1，元素2)
+
+两对象相似，类似（对象１，对象２）定义为：同属集合(的(o1,p)，的(o2,p))-->类似(o1,o2)
+同属集合(的(原子,结构)，的(太阳系,结构))-->类似(原子，太阳系)
+
+----
+定义与论断的区别
+定义无真值，论断有真值
+----
+
+
+endlegend
+@enduml
+
+

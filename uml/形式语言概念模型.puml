@@ -27,6 +27,7 @@ node  "名称" #TECHNOLOGY{
                 archimate #Business "元素集合关系（元素,集合）"
                 archimate #Business "父子集关系（元素,集合）"
                 archimate #Business "同属集合关系（元素,元素）"
+                archimate #Business "同义关系（名称,名称）"
             }
         }
 
@@ -60,15 +61,19 @@ node  "事实" as 事实 #TECHNOLOGY{
     node  "专名事实" as 专名事实 #TECHNOLOGY{
 
     }
-
     专名 --> 专名事实:赋值
     通名 --> 通名事实:赋值
+
 }
 
 
+node  "意图语境" as 意图语境 #TECHNOLOGY{
 
+}
 
+node  "经典语境" as 经典语境 #TECHNOLOGY{
 
+}
 
 
 
@@ -77,6 +82,10 @@ legend left
 
 建立一个能够搜索、自动生成相似结构的语义网，实现类比查询(推理)
 
+系统必须具备什么样的能力才能学习语言
+
+通名，联想建立已有通名到新通名的理解路径
+专名，联想建立联系
 
 endlegend
 
