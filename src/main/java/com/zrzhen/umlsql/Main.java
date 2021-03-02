@@ -4,15 +4,17 @@ import com.zrzhen.umlsql.core.*;
 
 public class Main {
 
+    public static boolean simpleModel = false;
+
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "D:\\chenanlian\\github\\umlsql\\uml\\形式语言数据模型.puml";
+        String umlFilePath = "D:\\chenanlian\\yinji\\scrm-center\\doc\\系统模块数据模型.puml";
 
         FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
 
 
         String sqlPath = filePath.getPath() + filePath.getName() + ".sql";
-        String odsPath =filePath.getPath() + filePath.getName() + "_ods.sql";
+        String odsPath = filePath.getPath() + filePath.getName() + "_ods.sql";
         String triggerPath = filePath.getPath() + filePath.getName() + "_trigger.sql";
 
         Uml2SqlConfig uml2SqlConfig = new Uml2SqlConfig(umlFilePath, sqlPath);

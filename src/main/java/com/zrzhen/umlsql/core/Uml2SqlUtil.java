@@ -1,5 +1,7 @@
 package com.zrzhen.umlsql.core;
 
+import com.zrzhen.umlsql.Main;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -88,8 +90,14 @@ public class Uml2SqlUtil {
                                 columns = columns.substring(0, columns.length() - 1);
                             }
 
-                            String buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE\n)  ENGINE="
-                                    + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
+                            String buildSql = null;
+                            if (Main.simpleModel) {
+                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE\n)  ENGINE="
+                                        + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
+                            } else {
+                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n";
+                            }
+
 
                             System.out.println(buildSql);
 
