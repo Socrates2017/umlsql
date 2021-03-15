@@ -56,7 +56,7 @@ package 通名 <<Frame>> #EAEAEA{
         PRIMARY KEY (`id`)
     }
 
-    RelationTable(common_fact, "通名事实。如元素集合关系。元素集合关系(红色，颜色)"){
+    RelationTable(fact, "事实。如元素集合关系。元素集合关系(红色，颜色)"){
         `id` bigint(20) NOT NULL COMMENT '主键',
         `relation_id`         bigint(20) NOT NULL comment 'common_relation主键',
         `src_id`       bigint(20) comment '源，通名',
