@@ -95,7 +95,7 @@ public class Uml2SqlUtil {
                                 buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE\n)  ENGINE="
                                         + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
                             } else {
-                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + ")\n";
+                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n";
                             }
 
 
