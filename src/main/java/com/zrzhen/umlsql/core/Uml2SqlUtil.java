@@ -92,7 +92,7 @@ public class Uml2SqlUtil {
 
                             String buildSql = null;
                             if (Main.simpleModel) {
-                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + " USING BTREE\n)  ENGINE="
+                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n)  ENGINE="
                                         + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
                             } else {
                                 buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n";
