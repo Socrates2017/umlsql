@@ -4,11 +4,11 @@ import com.zrzhen.umlsql.core.*;
 
 public class Main {
 
-    public static boolean simpleModel = false;
+    public static boolean simpleModel = true;
 
     public static void main(String[] args) throws FileEmptyException {
 
-        String umlFilePath = "D:\\chenanlian\\yinji\\scrm-center\\doc\\【移动端】数据模型.puml";
+        String umlFilePath = "D:\\chenanlian\\github\\bookerhome-portal\\doc\\【物品管理】数据模型.puml";
 
         FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
 
