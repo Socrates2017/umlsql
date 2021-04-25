@@ -20,7 +20,7 @@ public class Db2ddl {
 
         try {
             Class.forName(driverName);
-            con = DriverManager.getConnection("jdbc:mysql://192.168.1.7:3306/" + dbName, "charge", "Charge@123");
+            con = DriverManager.getConnection("jdbc:mysql://192.168.1.7:3306/" + dbName, "charge", "xxx");
             String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + dbName + "' AND TABLE_TYPE ='BASE TABLE'";
             stmt = con.createStatement();
             pstmt = con.prepareStatement(sql);

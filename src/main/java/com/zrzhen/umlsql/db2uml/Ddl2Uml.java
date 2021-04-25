@@ -64,7 +64,7 @@ public class Ddl2Uml {
                             //解析表说明
                             int bIndex = line.indexOf('\'');
                             int bLastIndex = line.lastIndexOf('\'');
-                            if (bIndex>-1){
+                            if (bIndex > -1) {
                                 comment = line.substring(bIndex + 1, bLastIndex);
                             }
 
@@ -74,7 +74,7 @@ public class Ddl2Uml {
                             table.setComment(comment);
                             table.setColumns(columns);
                             tableList.add(table);
-                            columns="";
+                            columns = "";
                             //单表结束
                             matchLine = false;
                         } else {
@@ -114,7 +114,7 @@ public class Ddl2Uml {
 
     private static void saveSql(List<Table> tableList, String savePath) {
 
-        StringBuilder sqlStr = new StringBuilder("@startuml\n" +
+        String pre = "@startuml\n" +
                 "\n" +
                 "/'实体表'/\n" +
                 "!define EntityTable(name,desc) class name as \"desc\" << (E,#FF3030) >>  #CORNSILK\n" +
@@ -144,13 +144,20 @@ public class Ddl2Uml {
                 "    BackgroundColor white\n" +
                 "    ArrowColor red\n" +
                 "    BorderColor MidnightBlue\n" +
-                "}");
+                "}";
 
-        sqlStr.append("\n\npackage 数据模型 <<Frame>> #EAEAEA{\n");
+        pre += "\n\npackage 数据模型 <<Frame>> #EAEAEA{\n";
+        System.out.println(pre);
+        StringBuilder sqlStr = new StringBuilder(pre);
+
         for (Table table : tableList) {
-            sqlStr.append(getBuildSql(table)).append("\n\n");
+            String c = getBuildSql(table) + "\n\n";
+            System.out.println(c);
+            sqlStr.append(c);
         }
-        sqlStr.append("\n}\n@enduml");
+
+        String end = "\n}\n@enduml";
+        sqlStr.append(end);
         CommonUtil.byte2File(sqlStr.toString().getBytes(), savePath);
         System.out.println("成功");
     }
