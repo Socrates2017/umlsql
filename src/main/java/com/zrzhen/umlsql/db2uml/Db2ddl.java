@@ -5,13 +5,52 @@ import java.sql.*;
 
 
 public class Db2ddl {
-    private static String driverName = "com.mysql.jdbc.Driver";
 
-    private static String dbName = "charge";
+    private String dbName;
+    private String driverName = "com.mysql.jdbc.Driver";
+    private String jdbcAddress;
+    private String jdbcUsername;
+    private String jdbcPassword;
+    private String saveDdlDir;
+    static Db2ddlBuilder db2ddlBuilder;
 
-    private static String dir = "D:\\chenanlian\\github\\umlsql\\uml\\";
+    public static Db2ddlBuilder config() {
+        if (db2ddlBuilder == null) {
+            synchronized (Db2ddl.class) {
+                if (db2ddlBuilder == null) {
+                    db2ddlBuilder = new Db2ddlBuilder();
+                }
+            }
+        }
+        return db2ddlBuilder;
+    }
 
-    public static void main(String[] args) {
+
+    public void setDbName(String dbName) {
+        this.dbName = dbName;
+    }
+
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
+
+    public void setJdbcAddress(String jdbcAddress) {
+        this.jdbcAddress = jdbcAddress;
+    }
+
+    public void setJdbcUsername(String jdbcUsername) {
+        this.jdbcUsername = jdbcUsername;
+    }
+
+    public void setJdbcPassword(String jdbcPassword) {
+        this.jdbcPassword = jdbcPassword;
+    }
+
+    public void setSaveDdlDir(String saveDdlDir) {
+        this.saveDdlDir = saveDdlDir;
+    }
+
+    public void execute() {
         Connection con = null;
         Statement stmt = null;
         PreparedStatement pstmt = null;
@@ -20,7 +59,7 @@ public class Db2ddl {
 
         try {
             Class.forName(driverName);
-            con = DriverManager.getConnection("jdbc:mysql://192.168.1.7:3306/" + dbName, "charge", "xxx");
+            con = DriverManager.getConnection("jdbc:mysql://" + jdbcAddress + "/" + dbName, jdbcUsername, jdbcPassword);
             String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + dbName + "' AND TABLE_TYPE ='BASE TABLE'";
             stmt = con.createStatement();
             pstmt = con.prepareStatement(sql);
@@ -33,13 +72,13 @@ public class Db2ddl {
                 while (rs.next()) {
                     String r = rs.getString(2);
                     System.out.println(r);
-                    System.out.println( "\n\n");
+                    System.out.println("\n\n");
                     sqlResult += r;
                     sqlResult += "\n\n";
                 }
             }
 
-            File file = new File(dir + dbName + "-ddl.sql");
+            File file = new File(saveDdlDir + dbName + "-ddl.sql");
             OutputStreamWriter osw = null;
             try {
                 osw = new OutputStreamWriter(new FileOutputStream(file));
@@ -84,5 +123,19 @@ public class Db2ddl {
                 }
             }
         }
+    }
+
+    public static void main(String[] args) {
+
+        Db2ddl db2ddl = Db2ddl.config()
+                .setJdbcAddress("192.168.1.7:3306")
+                .setJdbcUsername("charge")
+                .setJdbcPassword("Charge@123")
+                .setDbName("charge")
+                .setSaveDdlDir("D:\\chenanlian\\github\\umlsql\\uml\\")
+                .build();
+        db2ddl.execute();
+
+
     }
 }
