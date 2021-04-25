@@ -12,11 +12,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Ddl2Uml {
+public class Ddl2UmlUtil {
 
-    public static void main(String[] args) throws FileEmptyException {
+    public static String transformAndSave(String ddlPath) throws FileEmptyException {
 
-        String ddlPath = "D:\\chenanlian\\github\\umlsql\\uml\\charge-ddl.sql";
         FilePath filePath = CommonUtil.parseFilePath(ddlPath);
         String umlPath = filePath.getPath() + filePath.getName() + ".puml";
 
@@ -108,7 +107,7 @@ public class Ddl2Uml {
             }
         }
 
-
+        return umlPath;
     }
 
 

@@ -1,5 +1,7 @@
 package com.zrzhen.umlsql.db2uml;
 
+import com.zrzhen.umlsql.core.FileEmptyException;
+
 import java.io.*;
 import java.sql.*;
 
@@ -50,7 +52,8 @@ public class Db2ddl {
         this.saveDdlDir = saveDdlDir;
     }
 
-    public void execute() {
+    public String execute() {
+        String savePath = "";
         Connection con = null;
         Statement stmt = null;
         PreparedStatement pstmt = null;
@@ -78,7 +81,8 @@ public class Db2ddl {
                 }
             }
 
-            File file = new File(saveDdlDir + dbName + "-ddl.sql");
+            savePath = saveDdlDir + dbName + "-ddl.sql";
+            File file = new File(savePath);
             OutputStreamWriter osw = null;
             try {
                 osw = new OutputStreamWriter(new FileOutputStream(file));
@@ -123,19 +127,7 @@ public class Db2ddl {
                 }
             }
         }
+        return savePath;
     }
 
-    public static void main(String[] args) {
-
-        Db2ddl db2ddl = Db2ddl.config()
-                .setJdbcAddress("192.168.1.7:3306")
-                .setJdbcUsername("charge")
-                .setJdbcPassword("Charge@123")
-                .setDbName("charge")
-                .setSaveDdlDir("D:\\chenanlian\\github\\umlsql\\uml\\")
-                .build();
-        db2ddl.execute();
-
-
-    }
 }
