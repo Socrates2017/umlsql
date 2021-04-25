@@ -10,14 +10,14 @@
             String odsPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_ods.sql";
             String triggerPath = "E:\\github\\umlsql\\umlsql\\uml\\dataModel_trigger.sql";
     
-            Uml2SqlConfig uml2SqlConfig = new Uml2SqlConfig(umlFilePath, sqlPath);
-            Sql2OdsConfig sql2OdsConfig = new Sql2OdsConfig(sqlPath, odsPath);
+            Uml2SqlConfig uml2DdlConfig = new Uml2SqlConfig(umlFilePath, sqlPath);
+            Sql2OdsConfig ddl2OdsConfig = new Sql2OdsConfig(sqlPath, odsPath);
     
             OdsTriggerConfig odsTriggerConfig = new OdsTriggerConfig(sqlPath, triggerPath);
             odsTriggerConfig.setOdsDbName("ods_charge");
     
-            Uml2SqlUtil.transformAndSave(uml2SqlConfig);
-            Sql2OdsUtil.transformAndSave(sql2OdsConfig);
+            Uml2SqlUtil.transformAndSave(uml2DdlConfig);
+            Sql2OdsUtil.transformAndSave(ddl2OdsConfig);
             OdsTriggerUtil.transformAndSave(odsTriggerConfig);
     
         }

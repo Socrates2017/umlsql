@@ -3,7 +3,7 @@ package com.zrzhen.umlsql.core;
 /**
  * 建表语句生成Ods层建表语句配置类
  */
-public class Sql2OdsConfig {
+public class Ddl2OdsConfig {
 
     /**
      * 建表语句文件路径，建议以.sql为后缀
@@ -15,10 +15,10 @@ public class Sql2OdsConfig {
      */
     private String sqlSavePath;
 
-    public Sql2OdsConfig() {
+    public Ddl2OdsConfig() {
     }
 
-    public Sql2OdsConfig(String sqlFilePath, String sqlSavePath) {
+    public Ddl2OdsConfig(String sqlFilePath, String sqlSavePath) {
         this.sqlFilePath = sqlFilePath;
         this.sqlSavePath = sqlSavePath;
     }

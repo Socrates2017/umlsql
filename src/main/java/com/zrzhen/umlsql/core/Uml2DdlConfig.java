@@ -3,7 +3,7 @@ package com.zrzhen.umlsql.core;
 /**
  * uml建模文件生成建表语句配置类
  */
-public class Uml2SqlConfig {
+public class Uml2DdlConfig {
 
     /**
      * uml建模文件路径，建议以.uml为后缀
@@ -15,10 +15,10 @@ public class Uml2SqlConfig {
      */
     private String sqlSavePath;
 
-    public Uml2SqlConfig() {
+    public Uml2DdlConfig() {
     }
 
-    public Uml2SqlConfig(String umlFilePath, String sqlSavePath) {
+    public Uml2DdlConfig(String umlFilePath, String sqlSavePath) {
         this.umlFilePath = umlFilePath;
         this.sqlSavePath = sqlSavePath;
     }

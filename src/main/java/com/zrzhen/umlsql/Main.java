@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        //uml2Ddl();
-        ddl2Uml();
+        uml2Ddl();
+        //ddl2Uml();
 
     }
 
@@ -26,14 +26,14 @@ public class Main {
         String odsPath = filePath.getPath() + filePath.getName() + "_ods.sql";
         String triggerPath = filePath.getPath() + filePath.getName() + "_trigger.sql";
 
-        Uml2SqlConfig uml2SqlConfig = new Uml2SqlConfig(umlFilePath, sqlPath);
-        Sql2OdsConfig sql2OdsConfig = new Sql2OdsConfig(sqlPath, odsPath);
+        Uml2DdlConfig uml2DdlConfig = new Uml2DdlConfig(umlFilePath, sqlPath);
+        Ddl2OdsConfig ddl2OdsConfig = new Ddl2OdsConfig(sqlPath, odsPath);
 
         OdsTriggerConfig odsTriggerConfig = new OdsTriggerConfig(sqlPath, triggerPath);
         odsTriggerConfig.setOdsDbName("");
 
-        Uml2SqlUtil.transformAndSave(uml2SqlConfig);
-        Sql2OdsUtil.transformAndSave(sql2OdsConfig);
+        Uml2DdlUtil.transformAndSave(uml2DdlConfig);
+        Ddl2OdsUtil.transformAndSave(ddl2OdsConfig);
         OdsTriggerUtil.transformAndSave(odsTriggerConfig);
     }
 
