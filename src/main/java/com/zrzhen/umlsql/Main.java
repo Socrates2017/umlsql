@@ -1,6 +1,6 @@
 package com.zrzhen.umlsql;
 
-import com.zrzhen.umlsql.core.*;
+import com.zrzhen.umlsql.core.Uml2Ddl;
 import com.zrzhen.umlsql.db2uml.Db2ddl;
 import com.zrzhen.umlsql.db2uml.Ddl2UmlUtil;
 
@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        //uml2Ddl();
-        ddl2Uml();
+        uml2Ddl();
+        //ddl2Uml();
 
     }
 
@@ -19,20 +19,7 @@ public class Main {
     public static void uml2Ddl() throws Exception {
         String umlFilePath = "D:\\chenanlian\\github\\bookerhome-portal\\doc\\【项目管理】数据模型.puml";
 
-        FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
-        String sqlPath = filePath.getPath() + filePath.getName() + ".sql";
-        String odsPath = filePath.getPath() + filePath.getName() + "_ods.sql";
-        String triggerPath = filePath.getPath() + filePath.getName() + "_trigger.sql";
-
-        Uml2DdlConfig uml2DdlConfig = new Uml2DdlConfig(umlFilePath, sqlPath);
-        Ddl2OdsConfig ddl2OdsConfig = new Ddl2OdsConfig(sqlPath, odsPath);
-
-        OdsTriggerConfig odsTriggerConfig = new OdsTriggerConfig(sqlPath, triggerPath);
-        odsTriggerConfig.setOdsDbName("");
-
-        Uml2DdlUtil.transformAndSave(uml2DdlConfig);
-        Ddl2OdsUtil.transformAndSave(ddl2OdsConfig);
-        OdsTriggerUtil.transformAndSave(odsTriggerConfig);
+        Uml2Ddl.uml2Ddl(umlFilePath, true, true);
     }
 
     public static void ddl2Uml() throws Exception {
