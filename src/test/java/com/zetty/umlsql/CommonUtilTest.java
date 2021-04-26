@@ -1,6 +1,6 @@
 package com.zetty.umlsql;
 
-import com.zrzhen.umlsql.core.CommonUtil;
+import com.zrzhen.umlsql.uml2ddl.CommonUtil;
 
 
 public class CommonUtilTest {

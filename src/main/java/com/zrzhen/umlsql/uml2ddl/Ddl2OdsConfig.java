@@ -1,4 +1,4 @@
-package com.zrzhen.umlsql.core;
+package com.zrzhen.umlsql.uml2ddl;
 
 /**
  * 建表语句生成Ods层建表语句配置类

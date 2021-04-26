@@ -1,4 +1,4 @@
-package com.zrzhen.umlsql.core;
+package com.zrzhen.umlsql.uml2ddl;
 
 public class Table {
     String name;

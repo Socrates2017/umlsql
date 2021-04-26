@@ -1,6 +1,6 @@
 package com.zrzhen.umlsql;
 
-import com.zrzhen.umlsql.core.Uml2Ddl;
+import com.zrzhen.umlsql.uml2ddl.Uml2Ddl;
 import com.zrzhen.umlsql.db2uml.Db2ddl;
 import com.zrzhen.umlsql.db2uml.Ddl2UmlUtil;
 

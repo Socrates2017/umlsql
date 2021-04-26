@@ -1,9 +1,9 @@
 package com.zrzhen.umlsql.db2uml;
 
-import com.zrzhen.umlsql.core.CommonUtil;
-import com.zrzhen.umlsql.core.FileEmptyException;
-import com.zrzhen.umlsql.core.FilePath;
-import com.zrzhen.umlsql.core.Table;
+import com.zrzhen.umlsql.uml2ddl.CommonUtil;
+import com.zrzhen.umlsql.uml2ddl.FileEmptyException;
+import com.zrzhen.umlsql.uml2ddl.FilePath;
+import com.zrzhen.umlsql.uml2ddl.Table;
 
 import java.io.BufferedReader;
 import java.io.File;
