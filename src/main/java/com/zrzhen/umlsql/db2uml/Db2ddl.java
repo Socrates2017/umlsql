@@ -1,9 +1,9 @@
 package com.zrzhen.umlsql.db2uml;
 
-import com.zrzhen.umlsql.core.FileEmptyException;
-
 import java.io.*;
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Db2ddl {
@@ -14,6 +14,7 @@ public class Db2ddl {
     private String jdbcUsername;
     private String jdbcPassword;
     private String saveDdlDir;
+    private String[] tables;
     static Db2ddlBuilder db2ddlBuilder;
 
     public static Db2ddlBuilder config() {
@@ -52,6 +53,10 @@ public class Db2ddl {
         this.saveDdlDir = saveDdlDir;
     }
 
+    public void setTables(String... tables) {
+        this.tables = tables;
+    }
+
     public String execute() {
         String savePath = "";
         Connection con = null;
@@ -63,15 +68,34 @@ public class Db2ddl {
         try {
             Class.forName(driverName);
             con = DriverManager.getConnection("jdbc:mysql://" + jdbcAddress + "/" + dbName, jdbcUsername, jdbcPassword);
-            String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + dbName + "' AND TABLE_TYPE ='BASE TABLE'";
-            stmt = con.createStatement();
-            pstmt = con.prepareStatement(sql);
-            ResultSet res = stmt.executeQuery(sql);
-            while (res.next()) {
-                String tableName = res.getString(1);
-                /*stmt = con.createStatement();*/
-                if (tableName.contains("`")) continue;
-                ResultSet rs = pstmt.executeQuery("show create table `" + tableName + "`");
+            List<String> tablesList = new ArrayList<>();
+
+            if (tables != null && tables.length > 0) {
+                for (String table : tables) {
+                    tablesList.add(table);
+                }
+            } else {
+                String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '" + dbName + "' AND TABLE_TYPE ='BASE TABLE'";
+                stmt = con.createStatement();
+                pstmt = con.prepareStatement(sql);
+                ResultSet res = stmt.executeQuery(sql);
+                while (res.next()) {
+                    String tableName = res.getString(1);
+                    /*stmt = con.createStatement();*/
+                    if (tableName.contains("`")) {
+                        System.out.println("Ignore table:" + tableName);
+                        continue;
+                    }
+                    tablesList.add(tableName);
+                }
+            }
+
+            for (String table : tablesList) {
+                String sql = "show create table `" + table + "`";
+                if (pstmt == null) {
+                    pstmt = con.prepareStatement(sql);
+                }
+                ResultSet rs = pstmt.executeQuery(sql);
                 while (rs.next()) {
                     String r = rs.getString(2);
                     System.out.println(r);

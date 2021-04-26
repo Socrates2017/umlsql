@@ -10,8 +10,8 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        uml2Ddl();
-        //ddl2Uml();
+        //uml2Ddl();
+        ddl2Uml();
 
     }
 
@@ -20,8 +20,6 @@ public class Main {
         String umlFilePath = "D:\\chenanlian\\github\\bookerhome-portal\\doc\\【项目管理】数据模型.puml";
 
         FilePath filePath = CommonUtil.parseFilePath(umlFilePath);
-
-
         String sqlPath = filePath.getPath() + filePath.getName() + ".sql";
         String odsPath = filePath.getPath() + filePath.getName() + "_ods.sql";
         String triggerPath = filePath.getPath() + filePath.getName() + "_trigger.sql";
@@ -43,6 +41,7 @@ public class Main {
                 .setJdbcUsername("charge")
                 .setJdbcPassword("Charge@123")
                 .setDbName("charge")
+                //.setTables("biz_charge_gun", "biz_charge_pile")
                 .setSaveDdlDir("D:\\chenanlian\\github\\umlsql\\uml\\")
                 .build();
         String ddlPath = db2ddl.execute();

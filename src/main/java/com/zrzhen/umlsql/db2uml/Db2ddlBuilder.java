@@ -13,6 +13,10 @@ public class Db2ddlBuilder {
         return db2ddl;
     }
 
+    public Db2ddlBuilder setTables(String... tables) {
+        db2ddl.setTables(tables);
+        return this;
+    }
 
     public Db2ddlBuilder setDbName(String dbName) {
         db2ddl.setDbName(dbName);
