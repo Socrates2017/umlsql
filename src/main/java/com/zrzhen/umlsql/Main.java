@@ -17,9 +17,9 @@ public class Main {
 
 
     public static void uml2Ddl() throws Exception {
-        String umlFilePath = "D:\\chenanlian\\github\\bookerhome-portal\\doc\\【项目管理】数据模型.puml";
+        String umlFilePath = "D:\\chenanlian\\yinji\\charge-portal\\doc\\【数据模型】合作分成.puml";
 
-        Uml2Ddl.uml2Ddl(umlFilePath, true, true);
+        Uml2Ddl.uml2Ddl(umlFilePath, false, false);
     }
 
     public static void ddl2Uml() throws Exception {
@@ -28,7 +28,11 @@ public class Main {
                 .setJdbcUsername("charge")
                 .setJdbcPassword("Charge@123")
                 .setDbName("charge")
-                //.setTables("biz_charge_gun", "biz_charge_pile")
+//                .setTables("merchant",
+//                        "merchant_resource",
+//                        "merchant_role",
+//                        "merchant_role_resource",
+//                        "merchant_role_user")
                 .setSaveDdlDir("D:\\chenanlian\\github\\umlsql\\uml\\")
                 .build();
         String ddlPath = db2ddl.execute();

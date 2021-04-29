@@ -15,9 +15,9 @@ public class Uml2Ddl {
         odsTriggerConfig.setOdsDbName("");
 
         Uml2DdlUtil.transformAndSave(uml2DdlConfig);
-        if (genOds!=null&&genOds){
+        if (genOds != null && genOds) {
             Ddl2OdsUtil.transformAndSave(ddl2OdsConfig);
-            if (genTrigger!=null&&genTrigger){
+            if (genTrigger != null && genTrigger) {
                 OdsTriggerUtil.transformAndSave(odsTriggerConfig);
             }
         }

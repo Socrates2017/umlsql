@@ -90,18 +90,22 @@ public class Uml2DdlUtil {
                                 columns = columns.substring(0, columns.length() - 1);
                             }
 
-                            String buildSql = null;
+                            String dropDdl = "DROP TABLE IF EXISTS `" + name + "`;";
+                            String ddl = null;
                             if (Main.simpleModel) {
-                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n)  ENGINE="
+                                ddl = "CREATE TABLE `" + name + "` (\n" + columns + "\n)  ENGINE="
                                         + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
                             } else {
-                                buildSql = "CREATE TABLE `" + name + "` (\n" + columns + "\n";
+                                ddl = "CREATE TABLE `" + name + "` (\n" + columns + "\n";
                             }
 
 
-                            System.out.println(buildSql);
+                            System.out.println(dropDdl);
+                            System.out.println("");
+                            System.out.println(ddl);
 
-                            table.setBuildSql(buildSql);
+                            table.setDropDdl(dropDdl);
+                            table.setDdl(ddl);
 
                             matchLine = false;
                             end = false;
@@ -170,7 +174,8 @@ public class Uml2DdlUtil {
 
         String sqlStr = "";
         for (Table table : tableList) {
-            sqlStr += table.getBuildSql() + "\n\n";
+            sqlStr += table.getDropDdl() + "\n\n";
+            sqlStr += table.getDdl() + "\n\n";
         }
 
         CommonUtil.byte2File(sqlStr.getBytes(), savePath);

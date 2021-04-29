@@ -91,7 +91,7 @@ public class Ddl2OdsUtil {
                                     + columns + "\nPRIMARY KEY (`pk`) USING BTREE \n)  ENGINE="
                                     + table.getEngine() + " CHARSET=" + table.getCharset() + " COMMENT='" + comment + "';\n";
 
-                            table.setBuildSql(buildSql);
+                            table.setDdl(buildSql);
 
                             System.out.println(buildSql);
 
@@ -151,7 +151,7 @@ public class Ddl2OdsUtil {
 
         String sqlStr = "";
         for (Table table : tableList) {
-            sqlStr += table.getBuildSql() + "\n\n";
+            sqlStr += table.getDdl() + "\n\n";
         }
 
         CommonUtil.byte2File(sqlStr.getBytes(), savePath);

@@ -7,14 +7,27 @@ public class Table {
     String engine = "InnoDB";
     String charset = "utf8mb4";
 
-    String buildSql;
+    String ddl;
 
-    public String getBuildSql() {
-        return buildSql;
+    String dropDdl;
+
+    public Table() {
     }
 
-    public void setBuildSql(String buildSql) {
-        this.buildSql = buildSql;
+    public String getDropDdl() {
+        return dropDdl;
+    }
+
+    public void setDropDdl(String dropDdl) {
+        this.dropDdl = dropDdl;
+    }
+
+    public String getDdl() {
+        return ddl;
+    }
+
+    public void setDdl(String ddl) {
+        this.ddl = ddl;
     }
 
     public String getName() {
